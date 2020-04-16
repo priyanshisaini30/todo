@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"  crossorigin="anonymous"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    </script> <script src="sort.js"></script>
+     <script src="addtodos.js"></script>
+    <script src="updatetodo.js"></script>
+    <script  src="todolist.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <h2  class="text-center">Task and Notes Manager</h2>
+
+    <div class="container">        
+        <form>
+            <div class="form-group row">
+                <div class="col">
+              <label for="Title" >Title</label>
+              <input type="text" id="Title" class=" form-control " placeholder="Enter title">
+               </div>
+            <div class="col">
+              <label for="Description">Description</label>
+              <input type="text" id="Description" class="form-control" placeholder="Description">
+            </div>
+        </div>
+        <div class="form-group  row">
+            <div class="col-md-4">
+                <label for="DueDate">DueDate</label>
+                <input type="date"  id="DueDate" class="form-control">
+            </div>
+            
+            
+                <div class="col-md-4">
+                <label for="Priority">Priority</label>
+                <select id="Priority" class="form-control">
+                  <option selected>--</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+              <fieldset class="form-group">
+                <div class="col">
+                  <legend class="col-form-label">Status</legend>
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="Status"  value="incomplete" checked>
+                      <label class="form-check-label" for="incomplete">
+                        incomplete
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="Status" value="complete">
+                      <label class="form-check-label" for="complete">
+                        complete
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <button id="addtodo" type="submit" class="btn btn-primary">Submit</button>
+          </form>
+
+          <br>
+
+          <input type="hidden" id="date_order" value="asc">
+           <input type="hidden" id="status_order" value="asc">
+           <input type="hidden" id="priority_order" value="asc">
+        <div class="row">
+            <table class="table table-hover" id="table">
+                <thead>
+                  <tr>
+                    <th scope="col" >Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col" onclick=" sortByDate()"  class="sort-date">Due Date</th>
+                    <th scope="col" onclick=" sortTable(3)">Status</th>
+                    <th scope="col"  onclick="sortTableByPriority()">Priority</th>
+                    <th scope="col">  </th>
+                    <th scope="col" ></th>
+                    
+                    
+                  </tr>
+                </thead>
+                <tbody id="todolist_item">
+                  <tr >
+                    <td onclick="$('#notes').toggle();">Mark</td>
+                    <td>Otto</td>
+                    <td>20-09-2020</td>
+                    <td>incomplete</td>
+                    <td>high</td>
+                    <td>
+                        <table id="notes" style="display: none">
+                            <tr>
+                                <td>
+                                   <input type="text" placeholder="enter notes"></input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                  Second row of Inner Table
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" style="text-align: center;">Edit form</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <input type="hidden" id="updateId" readonly>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col">
+                      <label for="Title" >Title</label>
+                      <input type="text" id="updateTitle" class=" form-control"  readonly>
+                       </div>
+                    <div class="col">
+                      <label for="Description">Description</label>
+                      <input type="text" id="updateDescription" class="form-control"  readonly>
+                    </div>
+                </div>
+                <div class="form-group  row">
+                    <div class="col-sm-10">
+                        <label for="DueDate">DueDate</label>
+                        <input type="date"  id="updateDueDate" class="form-control" >
+                    </div>
+                        <div class="col-sm-10">
+                        <label for="Priority">Priority</label>
+                        <select id="updatePriority" class="form-control">
+                          <option value="High">High</option>
+                          <option value="Medium" selected>Medium</option>
+                          <option value="Low">Low</option>
+                        </select>
+                      </div>
+                      <fieldset class="form-group">
+                        <div class="col">
+                          <legend class="col-form-label">Status</legend>
+                          <div class="col-sm-10">
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="updateStatus"  value="incomplete" checked>
+                              <label class="form-check-label" for="incomplete">
+                                incomplete
+                              </label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="updateStatus" value="complete">
+                              <label class="form-check-label" for="complete">
+                                complete
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                    <button id="updatetodo" type="submit" class="btn btn-primary" >Update</button>
+                  
+              </form>
+            </div>
+          </div>
+          </div></div>
+   
+</body>
+</html>
